@@ -5,7 +5,7 @@ export default async function log(
     message: string
 ): Promise<Discord.Message | undefined> {
     const logChannel = client.channels.cache.get(
-        process.env.DEV_SERVER_LOG_CHANNEL_ID || ''
+        process.env.DEV_LOG_CHANNEL_ID || ''
     );
 
     if (logChannel) {
