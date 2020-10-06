@@ -71,7 +71,7 @@ export async function spank(message: Discord.Message): Promise<void> {
             '{"servers": {}}'
         );
     }
-    const spankedData = JSON.parse(
+    let spankedData = JSON.parse(
         fs.readFileSync(path.join(__dirname, '..', 'data', 'spankData.json'), {
             encoding: 'utf-8',
         })
@@ -185,6 +185,11 @@ export async function spank(message: Discord.Message): Promise<void> {
         return;
     }
 
+    spankedData = JSON.parse(
+        fs.readFileSync(path.join(__dirname, '..', 'data', 'spankData.json'), {
+            encoding: 'utf-8',
+        })
+    ) as SpankData;
     spankedData.servers[guild.id] = spankedData.servers[guild.id] || {};
     spankedData.servers[guild.id][spankedMember.id] =
         spankedData.servers[guild.id][spankedMember.id] || {};
@@ -344,6 +349,11 @@ export async function pat(message: Discord.Message): Promise<void> {
 
     const spanked = patMember.roles.cache.has(spankedRole.id);
 
+    spankedData = JSON.parse(
+        fs.readFileSync(path.join(__dirname, '..', 'data', 'spankData.json'), {
+            encoding: 'utf-8',
+        })
+    ) as SpankData;
     spankedData.servers[guild.id] = spankedData.servers[guild.id] || {};
     spankedData.servers[guild.id][patMember.id] =
         spankedData.servers[guild.id][patMember.id] || {};
