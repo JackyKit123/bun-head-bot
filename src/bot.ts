@@ -4,6 +4,7 @@ import banAll from './command/fakebanall';
 import help, { commandList } from './command/help';
 import ping from './command/ping';
 import replyMessage from './command/replyMessage';
+import { spank, pat } from './command/spank';
 import logMessage from './dev-command/logMessage';
 
 // eslint-disable-next-line no-console
@@ -51,6 +52,12 @@ client.on('message', async message => {
                 break;
             case 'ban-all':
                 await banAll(message);
+                break;
+            case 'spank':
+                await spank(message);
+                break;
+            case 'pat':
+                await pat(message);
                 break;
             case 'help':
                 await help(message);

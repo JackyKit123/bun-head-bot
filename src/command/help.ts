@@ -2,21 +2,37 @@ import * as Discord from 'discord.js';
 
 export const commandList = [
     {
-        command: '-usagi ping',
+        command: '`-usagi ping`',
         description: 'Ping the bot.',
     },
     {
-        command: '-usagi boys',
+        command: '`-usagi boys`',
         description: '*boys will be boys*',
     },
     {
-        command: '-usagi girls',
+        command: '`-usagi girls`',
         description: '*girls will be girls*',
     },
     {
-        command: '-usagi ban-all',
+        command: '`-usagi ban-all`',
         description:
             '`ADMINISTRATOR` only, cast a fake ban-all command to scare your server member.',
+    },
+    {
+        command: '`-usagi spank @Member`',
+        description: 'Spank a member.',
+    },
+    {
+        command: '`-usagi pat @Member`',
+        description: 'Pat a member. Removing their spanked role.',
+    },
+    {
+        command: '`-usagi spank leaderboard`',
+        description: 'Leaderboard for whoever spank, being spanked the most.',
+    },
+    {
+        command: '`-usagi pat leaderboard`',
+        description: 'Leaderboard for whoever pat, being patted the most.',
     },
 ];
 
