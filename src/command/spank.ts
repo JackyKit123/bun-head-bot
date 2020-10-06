@@ -243,7 +243,7 @@ export async function pat(message: Discord.Message): Promise<void> {
             '{"servers": {}}'
         );
     }
-    const spankedData = JSON.parse(
+    let spankedData = JSON.parse(
         fs.readFileSync(path.join(__dirname, '..', 'data', 'spankData.json'), {
             encoding: 'utf-8',
         })
