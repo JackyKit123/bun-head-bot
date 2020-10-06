@@ -11,7 +11,6 @@ module.exports = {
         node: true,
     },
     extends: [
-        'airbnb',
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
         'prettier/@typescript-eslint',
@@ -25,12 +24,5 @@ module.exports = {
     },
     rules: {
         'prettier/prettier': 'error',
-        'import/extensions': [
-            'error',
-            'ignorePackages',
-            {
-                ts: 'never',
-            },
-        ],
     },
 };
