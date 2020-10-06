@@ -186,11 +186,13 @@ export async function spank(message: Discord.Message): Promise<void> {
     }
 
     const serverData = spankedData.servers[guild.id] || {};
-    const spankedMemberData = serverData[spankedMember.id] || {};
-    const spankerMemberData = serverData[author.id] || {};
-    spankedMemberData.spanked = (spankedMemberData.spanked || 0) + 1;
-    spankerMemberData.spank = (spankerMemberData.spank || 0) + 1;
-    spankedData.servers[guild.id] = serverData;
+    spankedData.servers[guild.id][spankedMember.id] =
+        serverData[spankedMember.id] || {};
+    spankedData.servers[guild.id][author.id] = serverData[author.id] || {};
+    spankedData.servers[guild.id][spankedMember.id].spanked =
+        (spankedData.servers[guild.id][spankedMember.id].spanked || 0) + 1;
+    spankedData.servers[guild.id][author.id].spank =
+        (spankedData.servers[guild.id][spankedMember.id].spank || 0) + 1;
 
     fs.writeFileSync(
         path.join(__dirname, '..', 'data', 'spankData.json'),
@@ -342,11 +344,13 @@ export async function pat(message: Discord.Message): Promise<void> {
     const spanked = patMember.roles.cache.has(spankedRole.id);
 
     const serverData = spankedData.servers[guild.id] || {};
-    const patMemberData = serverData[patMember.id] || {};
-    const spankerMemberData = serverData[author.id] || {};
-    patMemberData.patted = (patMemberData.patted || 0) + 1;
-    spankerMemberData.pat = (spankerMemberData.pat || 0) + 1;
-    spankedData.servers[guild.id] = serverData;
+    spankedData.servers[guild.id][patMember.id] =
+        serverData[patMember.id] || {};
+    spankedData.servers[guild.id][author.id] = serverData[author.id] || {};
+    spankedData.servers[guild.id][patMember.id].patted =
+        (spankedData.servers[guild.id][patMember.id].patted || 0) + 1;
+    spankedData.servers[guild.id][author.id].pat =
+        (spankedData.servers[guild.id][patMember.id].pat || 0) + 1;
 
     fs.writeFileSync(
         path.join(__dirname, '..', 'data', 'spankData.json'),
