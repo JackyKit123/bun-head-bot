@@ -31,6 +31,15 @@ client.on('message', async message => {
     ) {
         return;
     }
+
+    const { NODE_ENV, DEV_TEST_CHANNEL_ID } = process.env;
+    if (
+        (NODE_ENV === 'production' && channel.id === DEV_TEST_CHANNEL_ID) ||
+        (NODE_ENV === 'development' && channel.id !== DEV_TEST_CHANNEL_ID)
+    ) {
+        return;
+    }
+
     try {
         switch (command?.toLowerCase()) {
             case 'ping':
