@@ -16,7 +16,7 @@ export default async function banAll(message: Discord.Message): Promise<void> {
     const timeout = setInterval(async () => {
         if (i > list.length) {
             clearInterval(timeout);
-            await channel.send(
+            await sentMessage.edit(
                 `Banning all members: ... \nBanned: ${list.join(
                     ' '
                 )}\nAll members are successfully banned.`
