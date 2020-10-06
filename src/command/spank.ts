@@ -185,10 +185,11 @@ export async function spank(message: Discord.Message): Promise<void> {
         return;
     }
 
-    const serverData = spankedData.servers[guild.id] || {};
+    spankedData.servers[guild.id] = spankedData.servers[guild.id] || {};
     spankedData.servers[guild.id][spankedMember.id] =
-        serverData[spankedMember.id] || {};
-    spankedData.servers[guild.id][author.id] = serverData[author.id] || {};
+        spankedData.servers[guild.id][spankedMember.id] || {};
+    spankedData.servers[guild.id][author.id] =
+        spankedData.servers[guild.id][author.id] || {};
     spankedData.servers[guild.id][spankedMember.id].spanked =
         (spankedData.servers[guild.id][spankedMember.id].spanked || 0) + 1;
     spankedData.servers[guild.id][author.id].spank =
@@ -343,10 +344,11 @@ export async function pat(message: Discord.Message): Promise<void> {
 
     const spanked = patMember.roles.cache.has(spankedRole.id);
 
-    const serverData = spankedData.servers[guild.id] || {};
+    spankedData.servers[guild.id] = spankedData.servers[guild.id] || {};
     spankedData.servers[guild.id][patMember.id] =
-        serverData[patMember.id] || {};
-    spankedData.servers[guild.id][author.id] = serverData[author.id] || {};
+        spankedData.servers[guild.id][patMember.id] || {};
+    spankedData.servers[guild.id][author.id] =
+        spankedData.servers[guild.id][author.id] || {};
     spankedData.servers[guild.id][patMember.id].patted =
         (spankedData.servers[guild.id][patMember.id].patted || 0) + 1;
     spankedData.servers[guild.id][author.id].pat =
