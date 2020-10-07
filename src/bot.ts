@@ -7,6 +7,7 @@ import replyMessage from './command/replyMessage';
 import { spank, pat } from './command/spank';
 import logMessage from './dev-command/logMessage';
 import eightball from './other/8ball';
+import randomfact from './other/deadchat';
 
 // eslint-disable-next-line no-console
 console.log('Starting client...');
@@ -33,6 +34,7 @@ client.on('message', async message => {
     }
 
     eightball(message);
+    randomfact(message, false);
 
     if (!suffix.replace(/[^\040-\176\200-\377]/gi, '').match(/^\\?-usagi\b/i)) {
         return;
@@ -63,6 +65,9 @@ client.on('message', async message => {
                 break;
             case 'pat':
                 await pat(message);
+                break;
+            case 'randomfact':
+                await randomfact(message, true);
                 break;
             case 'help':
                 await help(message);

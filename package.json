@@ -11,8 +11,10 @@
   "author": "JackyKit",
   "license": "ISC",
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/node": "^14.11.5",
     "@types/string-similarity": "^3.0.0",
+    "axios": "^0.20.0",
     "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
     "string-similarity": "^4.0.2",

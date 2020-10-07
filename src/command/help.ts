@@ -23,6 +23,10 @@ export const commandList = [
         description: 'Spank a member.',
     },
     {
+        command: '`-usagi randomfact`',
+        description: 'Tells you a random fact',
+    },
+    {
         command: '`-usagi pat @Member`',
         description: 'Pat a member. Removing their spanked role.',
     },
