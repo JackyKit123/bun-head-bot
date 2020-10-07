@@ -5,7 +5,7 @@ export default async function eightball(
 ): Promise<void> {
     const { channel, content } = message;
 
-    const regex = /^(do|wanna|should|is|are|am|should|may|shall|was|were|will|can|could|would)( \w+){1,}\?/i;
+    const regex = /^(do|wanna|should|is|are|am|should|may|shall|was|were|will|can|could|would|don't|wouldn't|isn't|aren't|ain't|shouldn't|won't|can't)( \w+){1,}\?/i;
     if (content.match(regex)) {
         const eightballAns = [
             'It is certain',
