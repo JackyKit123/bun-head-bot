@@ -28,7 +28,7 @@ export const commandList = [
     },
     {
         command: '`-usagi giphy <search target>`',
-        description: 'Search and send a gif from gifhy',
+        description: 'Search and send a gif from giphy',
     },
     {
         command: '`-usagi pat @Member`',

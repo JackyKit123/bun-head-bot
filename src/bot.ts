@@ -1,7 +1,7 @@
 import * as Discord from 'discord.js';
 import * as stringSimilarity from 'string-similarity';
 import banAll from './command/fakebanall';
-import gifhy from './command/gifhy';
+import giphy from './command/giphy';
 import help, { commandList } from './command/help';
 import ping from './command/ping';
 import replyMessage from './command/replyMessage';
@@ -70,8 +70,8 @@ client.on('message', async message => {
             case 'randomfact':
                 await randomfact(message, true);
                 break;
-            case 'gifhy':
-                await gifhy(message);
+            case 'giphy':
+                await giphy(message);
                 break;
             case 'help':
                 await help(message);
