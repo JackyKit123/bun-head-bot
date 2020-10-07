@@ -80,7 +80,7 @@ client.on('message', async message => {
                 break;
             default: {
                 const listOfCommands = Object.values(commandList).map(
-                    command => command.command
+                    command => command.command.split(' ')?.[1]
                 );
                 const { bestMatch } = stringSimilarity.findBestMatch(
                     command,
