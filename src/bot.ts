@@ -6,6 +6,7 @@ import ping from './command/ping';
 import replyMessage from './command/replyMessage';
 import { spank, pat } from './command/spank';
 import logMessage from './dev-command/logMessage';
+import eightball from './other/8ball';
 
 // eslint-disable-next-line no-console
 console.log('Starting client...');
@@ -26,10 +27,14 @@ client.on('ready', () => {
 client.on('message', async message => {
     const { content, channel, guild, author } = message;
     const [suffix, command] = content.split(' ');
-    if (
-        !suffix.replace(/[^\040-\176\200-\377]/gi, '').match(/^\\?-usagi\b/i) ||
-        author.bot
-    ) {
+
+    if (author.bot) {
+        return;
+    }
+
+    eightball(message);
+
+    if (!suffix.replace(/[^\040-\176\200-\377]/gi, '').match(/^\\?-usagi\b/i)) {
         return;
     }
 
