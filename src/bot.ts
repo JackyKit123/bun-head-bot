@@ -33,18 +33,18 @@ client.on('message', async message => {
         return;
     }
 
-    eightball(message);
-    randomfact(message, false);
-
-    if (!suffix.replace(/[^\040-\176\200-\377]/gi, '').match(/^\\?-usagi\b/i)) {
-        return;
-    }
-
     const { NODE_ENV, DEV_TEST_CHANNEL_ID } = process.env;
     if (
         (NODE_ENV === 'production' && channel.id === DEV_TEST_CHANNEL_ID) ||
         (NODE_ENV === 'development' && channel.id !== DEV_TEST_CHANNEL_ID)
     ) {
+        return;
+    }
+
+    eightball(message);
+    randomfact(message, false);
+
+    if (!suffix.replace(/[^\040-\176\200-\377]/gi, '').match(/^\\?-usagi\b/i)) {
         return;
     }
 
