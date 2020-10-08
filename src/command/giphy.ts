@@ -22,7 +22,11 @@ export default async function giphy(message: Discord.Message): Promise<void> {
     if (!results.length) {
         data = (
             await axios.get(
-                `https://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY_API_KEY}&lang=en`
+                `https://api.giphy.com/v1/gifs/random?api_key=${
+                    process.env.GIPHY_API_KEY
+                }&lang=en&rating=${
+                    (channel as Discord.TextChannel).nsfw ? 'r' : 'g'
+                }`
             )
         ).data;
         results = data.data;
