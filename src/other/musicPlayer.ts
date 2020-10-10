@@ -15,6 +15,7 @@ interface queueConstruct {
     connection?: Discord.VoiceConnection;
     playing: boolean;
     queue: Queue[];
+    shuffle: boolean;
 }
 
 export default class MusicPlayer {
@@ -295,6 +296,7 @@ export default class MusicPlayer {
             voiceChannel,
             playing: false,
             queue: [] as Queue[],
+            shuffle: false,
         };
         if (Array.isArray(videoInfo)) {
             serverQueue.queue = [...serverQueue.queue, ...videoInfo];
@@ -322,7 +324,15 @@ export default class MusicPlayer {
             throw new Error('Cannot create connection into voice channel.');
         }
         serverQueue.connection = connection;
-        const nextSong = serverQueue.queue[0];
+        let nextSong = serverQueue.queue[0];
+        if (serverQueue.shuffle) {
+            const randomNext = Math.floor(
+                Math.random() * serverQueue.queue.length
+            );
+            nextSong = serverQueue.queue[randomNext];
+            serverQueue.queue.splice(randomNext, 1);
+            serverQueue.queue.unshift(nextSong);
+        }
         if (!replay && serverQueue.playing) {
             return;
         }
@@ -415,7 +425,11 @@ export default class MusicPlayer {
                 new Discord.MessageEmbed()
                     .setTitle('Music Queue')
                     .setDescription(
-                        `This is the current Music Queue. There are \`${serverQueue.queue.length}\` songs in the queue At the moment.`
+                        `This is the current Music Queue. There are \`${
+                            serverQueue.queue.length
+                        }\` songs in the queue At the moment. Shuffle mode has been toggled ${
+                            serverQueue.shuffle ? 'on' : 'off'
+                        }.`
                     )
                     .setColor('#6ba4a5')
                     .setFooter(
@@ -457,6 +471,38 @@ export default class MusicPlayer {
         });
 
         collector.on('end', sentMessage.reactions.removeAll);
+    }
+
+    public async toggleShuffle(message: Discord.Message): Promise<void> {
+        const { guild, channel, content } = message;
+        const shuffle = content.split(' ')[2];
+        if (!guild) {
+            await channel.send(`This command can only be used in a server`);
+            return;
+        }
+        const serverQueue = this.serversQueue.get(guild.id) || {
+            playing: false,
+            queue: [] as Queue[],
+            shuffle: false,
+        };
+        if (shuffle === 'on') {
+            serverQueue.shuffle = true;
+        } else if (shuffle === 'off') {
+            serverQueue.shuffle = false;
+        } else if (shuffle === 'toggle') {
+            serverQueue.shuffle = !serverQueue.shuffle;
+        } else {
+            await channel.send(
+                'Please specify `on` `off` `toggle` for the shuffle command.'
+            );
+            return;
+        }
+        this.serversQueue.set(guild.id, serverQueue);
+        await channel.send(
+            `The queue will now be played in ${
+                serverQueue.shuffle ? 'random' : 'order'
+            }.`
+        );
     }
 
     public disconnect(guildId: string): void {
