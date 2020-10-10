@@ -3,6 +3,7 @@ import * as stringSimilarity from 'string-similarity';
 import banAll from './command/fakebanall';
 import giphy from './command/giphy';
 import help, { commandList } from './command/help';
+import MusicPlayer from './other/musicPlayer';
 import ping from './command/ping';
 import replyMessage from './command/replyMessage';
 import { spank, pat } from './command/spank';
@@ -13,6 +14,7 @@ import randomfact from './other/deadchat';
 // eslint-disable-next-line no-console
 console.log('Starting client...');
 const client = new Discord.Client();
+const player = new MusicPlayer(client);
 
 client.on('ready', () => {
     client.user?.setActivity('-usagi help', {
@@ -45,7 +47,7 @@ client.on('message', async message => {
     eightball(message);
     randomfact(message, false);
 
-    if (!suffix.replace(/[^\040-\176\200-\377]/gi, '').match(/^\\?-usagi\b/i)) {
+    if (!suffix.match(/^\\?-usagi\b/i)) {
         return;
     }
 
@@ -73,6 +75,23 @@ client.on('message', async message => {
             case 'giphy':
                 await giphy(message);
                 break;
+            case 'play':
+                await player.addSong(message);
+                break;
+            case 'replay':
+                await player.replay(message);
+                break;
+            case 'skip':
+                await player.skip(message);
+                break;
+            case 'stop':
+                await player.skip(message, true);
+                break;
+            case 'queue':
+                await player.showQueue(message);
+                break;
+            case 'select':
+                break;
             case 'help':
                 await help(message);
                 break;
@@ -99,9 +118,9 @@ client.on('message', async message => {
                         const awaitedMessage = await channel.awaitMessages(
                             (newMessage: Discord.Message) =>
                                 newMessage.author === message.author &&
-                                !!newMessage.content
-                                    .replace(/[^\040-\176\200-\377]/gi, '')
-                                    .match(/^(y(es)?|no?|\\?-usagi ?)/i),
+                                !!newMessage.content.match(
+                                    /^(y(es)?|no?|\\?-usagi ?)/i
+                                ),
                             { time: 60000, max: 1, errors: ['time'] }
                         );
                         if (
@@ -119,12 +138,10 @@ client.on('message', async message => {
                         );
                     }
                     if (answeredYes) {
-                        const editedCommandString = content
-                            .replace(/[^\040-\176\200-\377]/gi, '')
-                            .replace(
-                                `-usagi ${command}`,
-                                `-usagi ${bestMatch.target}`
-                            );
+                        const editedCommandString = content.replace(
+                            `-usagi ${command}`,
+                            `-usagi ${bestMatch.target}`
+                        );
                         // eslint-disable-next-line no-param-reassign
                         message.content = editedCommandString;
                         client.emit('message', message);
@@ -143,8 +160,8 @@ client.on('message', async message => {
         }
     } catch (err) {
         try {
+            channel.stopTyping();
             await channel.send(`Oops, something went wrong: ${err.message}`);
-
             await logMessage(
                 client,
                 `Oops, something went wrong in ${
@@ -157,6 +174,17 @@ client.on('message', async message => {
             // eslint-disable-next-line no-console
             console.error(criticalError);
         }
+    }
+});
+
+client.on('voiceStateUpdate', oldState => {
+    const { channel, guild } = oldState;
+    if (
+        channel?.members.size === 1 &&
+        client.user?.id &&
+        channel.members.get(client.user.id)
+    ) {
+        player.disconnect(guild.id);
     }
 });
 

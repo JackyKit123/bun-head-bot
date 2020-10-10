@@ -14,6 +14,28 @@ export const commandList = [
         description: '*girls will be girls*',
     },
     {
+        command: '`-usage play <search|Youtube-url>`',
+        description:
+            'Play music by supplying search param or youtube video url.',
+    },
+    {
+        command: '`-usage replay`',
+        description: 'Replay the current music.',
+    },
+    {
+        command: '`-usage skip`',
+        description: 'Skip the current music.',
+    },
+    {
+        command: '`-usage stop`',
+        description:
+            'Skip the current music and clear the current music queue.',
+    },
+    {
+        command: '`-usage queue`',
+        description: 'Show the current music queue.',
+    },
+    {
         command: '`-usagi ban-all`',
         description:
             '`ADMINISTRATOR` only, cast a fake ban-all command to scare your server member.',
