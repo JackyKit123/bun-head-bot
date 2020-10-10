@@ -87,7 +87,7 @@ export default class MusicPlayer {
                 )
                 .setColor('#34ebb4')
                 .setDescription(
-                    `Here are the search results for ${arg}, use \`-usagi select #\` to select the song.`
+                    `Here are the search results for ${arg}, use \`1-5\` to select the song.`
                 )
                 .addFields(
                     items.map((item, i) => ({
@@ -103,15 +103,13 @@ export default class MusicPlayer {
                     (newMessage: Discord.Message) =>
                         newMessage.author === message.author &&
                         !!newMessage.content.match(
-                            /^\\?-usagi (play ?|select [1-5]$)/i
+                            /^(\\?-usagi play ?)|^[1-5]$/i
                         ),
                     { time: 60000, max: 1, errors: ['time'] }
                 );
                 channel.startTyping();
-                const selection = awaitedMessage
-                    .first()
-                    ?.content.match(/^\\?-usagi select ([1-5])$/i)?.[1];
-                if (selection) {
+                const selection = awaitedMessage.first()?.content;
+                if (Number(selection)) {
                     answer = Number(selection);
                     await this.addVideoInfoToQueue(
                         guild,
