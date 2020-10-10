@@ -77,11 +77,7 @@ export async function spank(message: Discord.Message): Promise<void> {
         })
     ) as SpankData;
     if (!spankedMember) {
-        if (
-            content
-                .replace(/[^\040-\176\200-\377]/gi, '')
-                .match(/^\\?-usagi spank leaderboard\b/i)
-        ) {
+        if (content.match(/^\\?-usagi spank leaderboard\b/i)) {
             const leaderboard = Object.entries(
                 spankedData.servers[guild.id] || {}
             ).map(([memberId, data]) => ({
@@ -249,11 +245,7 @@ export async function pat(message: Discord.Message): Promise<void> {
         })
     ) as SpankData;
     if (!patMember) {
-        if (
-            content
-                .replace(/[^\040-\176\200-\377]/gi, '')
-                .match(/^\\?-usagi pat leaderboard\b/i)
-        ) {
+        if (content.match(/^\\?-usagi pat leaderboard\b/i)) {
             const leaderboard = Object.entries(
                 spankedData.servers[guild.id] || {}
             ).map(([memberId, data]) => ({

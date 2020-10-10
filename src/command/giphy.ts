@@ -3,9 +3,7 @@ import axios from 'axios';
 
 export default async function giphy(message: Discord.Message): Promise<void> {
     const { content, channel, author } = message;
-    const searchString = content
-        .replace(/[^\040-\176\200-\377]/gi, '')
-        .replace(/^\\?-usagi giphy ?/, '');
+    const searchString = content.replace(/^\\?-usagi giphy ?/, '');
 
     let { data } = await axios.get(
         `https://api.giphy.com/v1/gifs/search?api_key=${
