@@ -87,7 +87,7 @@ export default class MusicPlayer {
                 )
                 .setColor('#34ebb4')
                 .setDescription(
-                    `Here are the search results for ${arg}, use \`1-5\` to select the song.`
+                    `Here are the search results for ${arg}, type \`1-5\` to select the song.`
                 )
                 .addFields(
                     items.map((item, i) => ({
