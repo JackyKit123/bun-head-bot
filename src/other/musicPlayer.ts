@@ -425,9 +425,9 @@ export default class MusicPlayer {
                 new Discord.MessageEmbed()
                     .setTitle('Music Queue')
                     .setDescription(
-                        `This is the current Music Queue. There are \`${
+                        `This is the current music queue. There are \`${
                             serverQueue.queue.length
-                        }\` songs in the queue At the moment. Shuffle mode has been toggled ${
+                        }\` songs in the queue at the moment. Shuffle mode has been toggled ${
                             serverQueue.shuffle ? 'on' : 'off'
                         }.`
                     )
