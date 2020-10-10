@@ -14,25 +14,29 @@ export const commandList = [
         description: '*girls will be girls*',
     },
     {
-        command: '`-usage play <search|Youtube-url>`',
+        command: '`-usagi play <search|url>`',
         description:
-            'Play music by supplying search param or youtube video url.',
+            'Play music by supplying search param or youtube video url. Currently supporting: *Youtube Video*, *Youtube Playlist*, *Spotify Track*, *Spotify Playlist*',
     },
     {
-        command: '`-usage replay`',
+        command: '`-usagi replay`',
         description: 'Replay the current music.',
     },
     {
-        command: '`-usage skip`',
+        command: '`-usagi skip`',
         description: 'Skip the current music.',
     },
     {
-        command: '`-usage stop`',
+        command: '`-usagi shuffle <on|off|toggle>`',
+        description: 'Toggle the shuffle mode for music',
+    },
+    {
+        command: '`-usagi stop`',
         description:
             'Skip the current music and clear the current music queue.',
     },
     {
-        command: '`-usage queue`',
+        command: '`-usagi queue`',
         description: 'Show the current music queue.',
     },
     {
