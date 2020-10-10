@@ -386,7 +386,8 @@ export default class MusicPlayer {
             );
             return;
         }
-        serverQueue.connection?.dispatcher.end();
+        serverQueue.connection?.dispatcher?.end();
+        serverQueue.connection = undefined;
         if (stop) {
             serverQueue.queue = [];
             await channel.send(`Stopped everything and cleared and the queue.`);
