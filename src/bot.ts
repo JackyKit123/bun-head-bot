@@ -91,7 +91,7 @@ client.on('message', async message => {
                 await player.showQueue(message);
                 break;
             case 'shuffle':
-                await player.shuffle(message);
+                await player.toggleShuffle(message);
                 break;
             case 'select':
                 break;
