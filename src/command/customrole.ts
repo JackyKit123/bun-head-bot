@@ -28,7 +28,7 @@ export default async function customRole(
     );
     if (memberHasCustomRole) {
         await member.roles.remove(memberHasCustomRole);
-        if (memberHasCustomRole.members.size === 1) {
+        if (memberHasCustomRole.members.size === 0) {
             await memberHasCustomRole.delete();
         }
     }
