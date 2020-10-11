@@ -14,6 +14,10 @@ export const commandList = [
         description: '*girls will be girls*',
     },
     {
+        command: '`-usagi customrole <color> <rolename>`',
+        description: 'Assign yourself a custom role!',
+    },
+    {
         command: '`-usagi play <search|url>`',
         description:
             'Play music by supplying search param or youtube video url. Currently supporting: *Youtube Video*, *Youtube Playlist*, *Spotify Track*, *Spotify Playlist*',

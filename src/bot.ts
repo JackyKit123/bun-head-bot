@@ -10,6 +10,7 @@ import { spank, pat } from './command/spank';
 import logMessage from './dev-command/logMessage';
 import eightball from './other/8ball';
 import randomfact from './other/deadchat';
+import customRole from './command/customrole';
 
 // eslint-disable-next-line no-console
 console.log('Starting client...');
@@ -74,6 +75,9 @@ client.on('message', async message => {
                 break;
             case 'giphy':
                 await giphy(message);
+                break;
+            case 'customrole':
+                await customRole(message);
                 break;
             case 'play':
                 await player.addSong(message);
