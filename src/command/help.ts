@@ -23,8 +23,9 @@ export const commandList = [
         description: 'Replay the current music.',
     },
     {
-        command: '`-usagi skip`',
-        description: 'Skip the current music.',
+        command: '`-usagi skip [index]`',
+        description:
+            'Skip the current music, if provided an optional parameter, you can remove certain index of song from the queue.',
     },
     {
         command: '`-usagi shuffle <on|off|toggle>`',

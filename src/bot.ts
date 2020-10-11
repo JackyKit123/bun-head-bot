@@ -85,7 +85,7 @@ client.on('message', async message => {
                 await player.skip(message);
                 break;
             case 'stop':
-                await player.skip(message, true);
+                await player.skip(message);
                 break;
             case 'queue':
                 await player.showQueue(message);

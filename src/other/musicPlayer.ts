@@ -395,13 +395,16 @@ export default class MusicPlayer {
         this.play(serverQueue, true);
     }
 
-    public async skip(message: Discord.Message, stop?: true): Promise<void> {
-        const { guild, channel } = message;
+    public async skip(message: Discord.Message): Promise<void> {
+        const { guild, channel, content } = message;
         if (!guild) {
             await channel.send(`This command can only be used in a server.`);
             return;
         }
         const serverQueue = this.serversQueue.get(guild.id);
+        const command = content.split(' ');
+        const stop = command[1] === 'stop';
+        const index = Number(command[2]);
         if (!serverQueue || !serverQueue.queue.length) {
             await channel.send(
                 `The queue is empty, there is nothing to ${
@@ -410,13 +413,25 @@ export default class MusicPlayer {
             );
             return;
         }
-        serverQueue.connection?.dispatcher?.end();
-        serverQueue.connection = undefined;
         if (stop) {
             serverQueue.queue = [];
+            serverQueue.connection?.dispatcher?.end();
             await channel.send(`Stopped everything and cleared and the queue.`);
-        } else {
+        } else if (!index || index === 1) {
+            serverQueue.connection?.dispatcher?.end();
             await channel.send(`Skipped \`${serverQueue.queue[0].title}\`…`);
+        } else {
+            if (index > serverQueue.queue.length || index < 1) {
+                await channel.send(
+                    `Song index \`${index}\` does not exist in the queue.`
+                );
+                return;
+            }
+            const removeTarget = serverQueue.queue[index - 1];
+            serverQueue.queue.splice(index - 1, 1);
+            await channel.send(
+                `Removed \`${removeTarget.title}\` from the queue.`
+            );
         }
     }
 
