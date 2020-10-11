@@ -21,7 +21,7 @@ interface queueConstruct {
 export default class MusicPlayer {
     private client: Discord.Client;
     private serversQueue = new Map<string, queueConstruct>();
-    private spotifyAccessToken = '';
+    private spotifyAccessToken: null | string = null;
 
     constructor(client: Discord.Client) {
         this.client = client;
@@ -42,6 +42,7 @@ export default class MusicPlayer {
             }
         );
         this.spotifyAccessToken = res.data.access_token;
+        setTimeout(() => (this.spotifyAccessToken = null), 3600000);
     }
 
     private parseArg(raw: string): string {
@@ -78,18 +79,27 @@ export default class MusicPlayer {
         limit: number,
         safeSearch: boolean
     ): Promise<ytsr.Result> {
-        const filters = await ytsr.getFilters(searchString);
-        const filter1 = filters.get('Type')?.find(o => o.name === 'Video');
-        const filters2 = await ytsr.getFilters(filter1?.ref || searchString);
-        const filter2 = filters2
-            .get('Duration')
-            ?.find(o => o.name.startsWith('Short'));
-        const searchResults = await ytsr(null, {
-            limit,
-            safeSearch,
-            nextpageRef: filter2?.ref || undefined,
-        });
-        return searchResults;
+        try {
+            const filters = await ytsr.getFilters(searchString);
+            const filter1 = filters.get('Type')?.find(o => o.name === 'Video');
+            const filters2 = await ytsr.getFilters(
+                filter1?.ref || searchString
+            );
+            const filter2 = filters2
+                .get('Duration')
+                ?.find(o => o.name.startsWith('Short'));
+            const searchResults = await ytsr(null, {
+                limit,
+                safeSearch,
+                nextpageRef: filter2?.ref || undefined,
+            });
+            return searchResults;
+        } catch (err) {
+            if (err.message === 'Unexpected token < in JSON at position 0') {
+                return this.searchYoutube(searchString, limit, safeSearch);
+            }
+            throw err;
+        }
     }
 
     public async addSong(message: Discord.Message): Promise<void> {
@@ -111,7 +121,7 @@ export default class MusicPlayer {
         }
         const { nsfw } = channel as Discord.TextChannel;
         const isSpotifyPlayList = arg.match(
-            /spotify(?:\.com)?[/:]playlist[/:](.+)[\s?]/
+            /spotify(?:\.com)?(?:\/user\/.+)?[/:]playlist[/:](.+)[\s?]/
         );
         const isSpotifyTrack = arg.match(
             /spotify(?:\.com)?[/:]track[/:](.+)[\s?]/
@@ -136,6 +146,9 @@ export default class MusicPlayer {
         }
         if (isSpotifyPlayList) {
             const playListId = isSpotifyPlayList[1];
+            if (!this.spotifyAccessToken) {
+                await this.loginSpotify();
+            }
             const res = await axios.get(
                 `https://api.spotify.com/v1/playlists/${playListId}/tracks`,
                 {
@@ -162,15 +175,18 @@ export default class MusicPlayer {
                             .join(' ')}`
                 );
             const results = await Promise.all(
-                tracks.map(async track => {
-                    const data = (await this.searchYoutube(track, 1, !nsfw))
-                        .items[0] as ytsr.Video;
-                    return {
-                        url: data.link,
-                        title: data.title,
-                        duration: data.duration || '0:0',
-                    };
-                })
+                tracks
+                    .map(async track => {
+                        const data = (await this.searchYoutube(track, 1, !nsfw))
+                            .items[0] as ytsr.Video;
+                        if (!data) return null;
+                        return {
+                            url: data.link,
+                            title: data.title,
+                            duration: data.duration || '0:0',
+                        };
+                    })
+                    .filter(result => result) as Promise<Queue>[]
             );
             await this.addVideoInfoToQueue(
                 guild,
@@ -182,6 +198,9 @@ export default class MusicPlayer {
         }
         if (isSpotifyTrack) {
             const trackId = isSpotifyTrack[1];
+            if (!this.spotifyAccessToken) {
+                await this.loginSpotify();
+            }
             const res = await axios.get(
                 `https://api.spotify.com/v1/tracks/${trackId}`,
                 {
@@ -207,6 +226,11 @@ export default class MusicPlayer {
                     !nsfw
                 )
             ).items[0] as ytsr.Video;
+            if (!result) {
+                throw new Error(
+                    `Cannot find music for track \`${track.name}\`.`
+                );
+            }
             await this.addVideoInfoToQueue(
                 guild,
                 voiceChannel,
