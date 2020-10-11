@@ -416,9 +416,11 @@ export default class MusicPlayer {
         if (stop) {
             serverQueue.queue = [];
             serverQueue.connection?.dispatcher?.end();
+            serverQueue.connection = undefined;
             await channel.send(`Stopped everything and cleared and the queue.`);
         } else if (!index || index === 1) {
             serverQueue.connection?.dispatcher?.end();
+            serverQueue.connection = undefined;
             await channel.send(`Skipped \`${serverQueue.queue[0].title}\`…`);
         } else {
             if (index > serverQueue.queue.length || index < 1) {
