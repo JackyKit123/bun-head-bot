@@ -444,7 +444,7 @@ export default class MusicPlayer {
         const serverQueue = this.serversQueue.get(guild.id);
         if (!serverQueue?.queue.length) {
             await channel.send(
-                'The queue is currently empty, use `-usagi play` to start playing music.`'
+                'The queue is currently empty, use `-usagi play` to start playing music.'
             );
             return;
         }
