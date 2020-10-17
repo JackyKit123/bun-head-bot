@@ -52,7 +52,9 @@ export async function roleAdd(
     const { content, author, mentions, guild } = message;
     const clientUser = client.user as Discord.ClientUser;
 
-    await reaction.users.remove(user.id);
+    if (user.id !== client.user?.id) {
+        await reaction.users.remove(user.id);
+    }
     if (
         !guild ||
         !guild.member(clientUser)?.hasPermission('MANAGE_ROLES') ||

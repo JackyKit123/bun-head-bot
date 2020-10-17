@@ -204,8 +204,7 @@ client.on('voiceStateUpdate', oldState => {
 client.on('messageReactionAdd', async (reaction, user) => {
     const { message } = reaction;
     const { guild, content, channel, partial } = message;
-    if (user.bot && user.id !== client.user?.id) {
-        await reaction.users.remove(user.id);
+    if (user.bot) {
         return;
     }
     if (partial) {
