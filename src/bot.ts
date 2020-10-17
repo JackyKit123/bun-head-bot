@@ -213,7 +213,7 @@ client.on('messageDelete', async message => {
             client,
             `Oops, something went wrong when listening to deleting message in ${
                 guild ? guild.name : 'DM Channel'
-            } \n${err.message}`
+            } \n${err.stack}`
         );
     }
 });
@@ -254,7 +254,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
             client,
             `Oops, something went wrong when ${user.toString()} was trying to react to \`${content}\` in ${
                 guild ? guild.name : 'DM Channel'
-            } \n${err.message}`
+            } \n${err.stack}`
         );
     }
 });
