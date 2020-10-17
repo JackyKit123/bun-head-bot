@@ -15,7 +15,9 @@ import { roleAdd, roleClaimCommand } from './command/roleclaim';
 
 // eslint-disable-next-line no-console
 console.log('Starting client...');
-const client = new Discord.Client();
+const client = new Discord.Client({
+    partials: ['MESSAGE', 'REACTION'],
+});
 const player = new MusicPlayer(client);
 
 client.on('ready', () => {
@@ -201,10 +203,15 @@ client.on('voiceStateUpdate', oldState => {
 
 client.on('messageReactionAdd', async (reaction, user) => {
     const { message } = reaction;
-    const { guild, content, channel } = message;
+    const { guild, content, channel, partial } = message;
     if (user.bot) {
+        await reaction.users.remove(user.id);
         return;
     }
+    if (partial) {
+        await message.fetch();
+    }
+
     const { NODE_ENV, DEV_TEST_CHANNEL_ID } = process.env;
     if (
         (NODE_ENV === 'production' && channel.id === DEV_TEST_CHANNEL_ID) ||
