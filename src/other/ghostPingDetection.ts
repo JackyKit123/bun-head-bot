@@ -17,6 +17,10 @@ export default async function ghostPingDetection(
         ...(content.includes('@here') ? ['@here'] : []),
     ];
 
+    if (!mentionList.length) {
+        return;
+    }
+
     const fetchedLogs = await guild.fetchAuditLogs({
         limit: 6,
         type: 'MESSAGE_DELETE',
