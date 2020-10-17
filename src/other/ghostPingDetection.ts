@@ -28,24 +28,31 @@ export default async function ghostPingDetection(
 
     const executor =
         fetchedLogs.entries
-            .find(
+            .filter(
                 entry =>
-                    (entry.target as Discord.User | null)?.id === author.id &&
-                    (entry.extra as Discord.Message | null)?.channel?.id ===
-                        channel.id &&
+                    (entry.target as Discord.User).id === author.id &&
+                    (entry.extra as {
+                        channel: Discord.TextChannel;
+                    })?.channel?.id === channel.id &&
                     Date.now() - entry.createdTimestamp < 20000
             )
-            ?.executor.toString() || 'Unknown';
+            .first()?.executor || author;
 
     await channel.send(
-        `${mentionList.join(
-            ' '
-        )}, you were ghost pinged by ${author.toString()}.`,
+        `${mentionList.join(' ')}`,
         new Discord.MessageEmbed()
             .setColor('#34ebb4')
             .setTitle('Ghost Ping Detection')
+            .setAuthor(
+                'Bun Head',
+                'https://cdn.discordapp.com/avatars/762967844781817906/a6fae5fd26f33cce0a337b76e17442cb.png?size=256'
+            )
+            .setDescription(
+                "I have picked up a ghost pinged. Here's the detail for the removed message."
+            )
             .addField('Deleted Message', content)
             .addField('In Channel', channel.toString())
+            .addField('Message Sent By', author.toString())
             .addField('Deleted By', executor)
             .setTimestamp()
     );
