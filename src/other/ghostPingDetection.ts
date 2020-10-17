@@ -48,7 +48,7 @@ export default async function ghostPingDetection(
                 'https://cdn.discordapp.com/avatars/762967844781817906/a6fae5fd26f33cce0a337b76e17442cb.png?size=256'
             )
             .setDescription(
-                "I have picked up a ghost pinged. Here's the detail for the removed message."
+                "You have been ghost pinged and I have picked it up. Here's the detail for the removed message."
             )
             .addField('Deleted Message', content)
             .addField('In Channel', channel.toString())
