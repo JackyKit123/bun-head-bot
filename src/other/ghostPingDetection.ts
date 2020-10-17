@@ -39,7 +39,7 @@ export default async function ghostPingDetection(
             .first()?.executor || author;
 
     await channel.send(
-        `${mentionList.join(' ')}`,
+        mentionList.join(' '),
         new Discord.MessageEmbed()
             .setColor('#34ebb4')
             .setTitle('Ghost Ping Detection')
