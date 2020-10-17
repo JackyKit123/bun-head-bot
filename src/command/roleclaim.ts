@@ -33,12 +33,14 @@ export async function roleClaimCommand(
         return;
     }
 
+    await message.delete();
     const sentMessage = await channel.send(
-        `React to this message to claim your <@&${
+        `React to ✅ to claim your <@&${
             typeof role === 'string' ? role : role.id
-        }> role.`
+        }> role. React to ❎ to remove your claimed role.`
     );
     await sentMessage.react('✅');
+    await sentMessage.react('❎');
 }
 
 export async function roleAdd(
@@ -54,9 +56,9 @@ export async function roleAdd(
     if (
         !guild ||
         !guild.member(clientUser)?.hasPermission('MANAGE_ROLES') ||
-        emoji.name !== '✅' ||
+        !emoji.name.match(/✅|❎/) ||
         !content.match(
-            /^React to this message to claim your <@&[0-9]+> role.$/
+            /^React to ✅ to claim your <@&[0-9]+> role. React to ❎ to remove your claimed role.$/
         ) ||
         author.id !== clientUser.id
     ) {
@@ -75,5 +77,9 @@ export async function roleAdd(
         return;
     }
 
-    await member.roles.add(role);
+    if (emoji.name === '✅') {
+        await member.roles.add(role);
+    } else if (emoji.name === '❎') {
+        await member.roles.remove(role);
+    }
 }
