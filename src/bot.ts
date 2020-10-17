@@ -11,6 +11,7 @@ import logMessage from './dev-command/logMessage';
 import eightball from './other/8ball';
 import randomfact from './other/deadchat';
 import customRole from './command/customrole';
+import { roleAdd, roleClaimCommand } from './command/roleclaim';
 
 // eslint-disable-next-line no-console
 console.log('Starting client...');
@@ -96,6 +97,9 @@ client.on('message', async message => {
                 break;
             case 'shuffle':
                 await player.toggleShuffle(message);
+                break;
+            case 'create-role-claim':
+                await roleClaimCommand(message);
                 break;
             case 'select':
                 break;
@@ -192,6 +196,32 @@ client.on('voiceStateUpdate', oldState => {
         channel.members.get(client.user.id)
     ) {
         player.disconnect(guild.id);
+    }
+});
+
+client.on('messageReactionAdd', async (reaction, user) => {
+    const { message } = reaction;
+    const { guild, content, channel } = message;
+    if (user.bot) {
+        return;
+    }
+    const { NODE_ENV, DEV_TEST_CHANNEL_ID } = process.env;
+    if (
+        (NODE_ENV === 'production' && channel.id === DEV_TEST_CHANNEL_ID) ||
+        (NODE_ENV === 'development' && channel.id !== DEV_TEST_CHANNEL_ID)
+    ) {
+        return;
+    }
+
+    try {
+        await roleAdd(client, reaction, user);
+    } catch (err) {
+        await logMessage(
+            client,
+            `Oops, something went wrong when ${user.toString()} was trying to react to \`${content}\` in ${
+                guild ? guild.name : 'DM Channel'
+            } \n${err.message}`
+        );
     }
 });
 

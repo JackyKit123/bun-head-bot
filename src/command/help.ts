@@ -66,6 +66,11 @@ export const commandList = [
         description: 'Pat a member. Removing their spanked role.',
     },
     {
+        command: '`-usagi create-role-claim <@role>`',
+        description:
+            '`ADMINISTRATOR` only, create a message that allows member to claim their role by reacting to a message.',
+    },
+    {
         command: '`-usagi spank leaderboard`',
         description: 'Leaderboard for whoever spank, being spanked the most.',
     },
