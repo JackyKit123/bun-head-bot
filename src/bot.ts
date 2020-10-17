@@ -12,6 +12,7 @@ import eightball from './other/8ball';
 import randomfact from './other/deadchat';
 import customRole from './command/customrole';
 import { roleAdd, roleClaimCommand } from './command/roleclaim';
+import ghostPingDetection from './other/ghostPingDetection';
 
 // eslint-disable-next-line no-console
 console.log('Starting client...');
@@ -187,6 +188,33 @@ client.on('message', async message => {
             // eslint-disable-next-line no-console
             console.error(criticalError);
         }
+    }
+});
+
+client.on('messageDelete', async message => {
+    const { channel, partial, guild } = message;
+
+    if (partial) {
+        return;
+    }
+
+    const { NODE_ENV, DEV_TEST_CHANNEL_ID } = process.env;
+    if (
+        (NODE_ENV === 'production' && channel.id === DEV_TEST_CHANNEL_ID) ||
+        (NODE_ENV === 'development' && channel.id !== DEV_TEST_CHANNEL_ID)
+    ) {
+        return;
+    }
+
+    try {
+        await ghostPingDetection(client, message as Discord.Message);
+    } catch (err) {
+        await logMessage(
+            client,
+            `Oops, something went wrong when listening to deleting message in ${
+                guild ? guild.name : 'DM Channel'
+            } \n${err.message}`
+        );
     }
 });
 
