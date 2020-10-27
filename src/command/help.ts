@@ -71,6 +71,11 @@ export const commandList = [
             '`ADMINISTRATOR` only, create a message that allows member to claim their role by reacting to a message.',
     },
     {
+        command: '`-usagi clear <@member|number of message>`',
+        description:
+            '`MANAGE_MESSAGES` permission needed, bulk delete messages.',
+    },
+    {
         command: '`-usagi spank leaderboard`',
         description: 'Leaderboard for whoever spank, being spanked the most.',
     },

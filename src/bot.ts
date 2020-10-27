@@ -13,6 +13,7 @@ import randomfact from './other/deadchat';
 import customRole from './command/customrole';
 import { roleAdd, roleClaimCommand } from './command/roleclaim';
 import ghostPingDetection from './other/ghostPingDetection';
+import clear from './command/clearChat';
 
 // eslint-disable-next-line no-console
 console.log('Starting client...');
@@ -82,6 +83,9 @@ client.on('message', async message => {
                 break;
             case 'customrole':
                 await customRole(message);
+                break;
+            case 'clear':
+                await clear(message);
                 break;
             case 'play':
                 await player.addSong(message);
