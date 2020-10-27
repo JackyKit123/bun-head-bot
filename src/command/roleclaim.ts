@@ -52,9 +52,6 @@ export async function roleAdd(
     const { content, author, mentions, guild } = message;
     const clientUser = client.user as Discord.ClientUser;
 
-    if (user.id !== client.user?.id) {
-        await reaction.users.remove(user.id);
-    }
     if (
         !guild ||
         !guild.member(clientUser)?.hasPermission('MANAGE_ROLES') ||
@@ -83,5 +80,8 @@ export async function roleAdd(
         await member.roles.add(role);
     } else if (emoji.name === '❎') {
         await member.roles.remove(role);
+    }
+    if (user.id !== client.user?.id) {
+        await reaction.users.remove(user.id);
     }
 }
