@@ -28,9 +28,6 @@ export default async function customRole(
     );
     if (memberHasCustomRole) {
         await member.roles.remove(memberHasCustomRole);
-        if (memberHasCustomRole.members.size === 0) {
-            await memberHasCustomRole.delete();
-        }
     }
     const rgbToHex = (r: number, g: number, b: number): string => {
         return (
@@ -57,4 +54,9 @@ export default async function customRole(
     });
     await member.roles.add(newRole);
     await channel.send(`Added ${newRole.toString()} to you.`);
+    guild.roles.cache.forEach(role => {
+        if (role.members.size === 0 && role.name.endsWith('(Custom)')) {
+            role.delete();
+        }
+    });
 }
