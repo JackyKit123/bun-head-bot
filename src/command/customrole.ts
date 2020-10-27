@@ -23,27 +23,9 @@ export default async function customRole(
             `Please include a role name for your custom role after color.`
         );
     }
-    const memberHasCustomRole = member.roles.cache.find(role =>
-        role.name.endsWith('(Custom)')
-    );
-    if (memberHasCustomRole) {
-        await member.roles.remove(memberHasCustomRole);
-    }
-    const rgbToHex = (r: number, g: number, b: number): string => {
-        return (
-            '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
-        );
-    };
-    const guildExistsCustomRole = guild.roles.cache.find(
-        role =>
-            role.name === `${roleName} (Custom)` &&
-            role.hexColor === rgbToHex(color.r, color.g, color.b)
-    );
-    if (guildExistsCustomRole) {
-        await member.roles.add(guildExistsCustomRole);
-        await channel.send(`Added ${guildExistsCustomRole.toString()} to you.`);
-        return;
-    }
+    await member.roles.cache
+        .find(role => role.name.endsWith(' (Custom)'))
+        ?.delete();
     const newRole = await guild.roles.create({
         data: {
             name: `${roleName} (Custom)`,
@@ -54,9 +36,4 @@ export default async function customRole(
     });
     await member.roles.add(newRole);
     await channel.send(`Added ${newRole.toString()} to you.`);
-    guild.roles.cache.forEach(role => {
-        if (role.members.size === 0 && role.name.endsWith('(Custom)')) {
-            role.delete();
-        }
-    });
 }
