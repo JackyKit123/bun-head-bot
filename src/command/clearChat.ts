@@ -40,11 +40,9 @@ export default async function clear(message: Discord.Message): Promise<void> {
         );
         await message.delete();
         await (channel as Discord.TextChannel).bulkDelete(memberMessages);
-        const sentMessage = await channel.send(
+        await channel.send(
             `Deleted ${memberMessages.size} messages from ${targetMember}.`
         );
-        await wait(3000);
-        await sentMessage.delete();
         return;
     }
 
