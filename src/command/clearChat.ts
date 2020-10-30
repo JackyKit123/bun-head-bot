@@ -36,7 +36,9 @@ export default async function clear(message: Discord.Message): Promise<void> {
         const targetMember = guild.members.cache.get(clearMember);
         const messages = await channel.messages.fetch({ limit: 100 });
         const memberMessages = messages.filter(
-            msg => msg.author.id === targetMember?.id
+            msg =>
+                msg.author.id === targetMember?.id &&
+                Date.now().valueOf() - msg.createdTimestamp < 86400000 * 14
         );
         await message.delete();
         await (channel as Discord.TextChannel).bulkDelete(memberMessages);
