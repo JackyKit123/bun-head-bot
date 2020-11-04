@@ -22,6 +22,7 @@ export default async function customRole(
         await channel.send(
             `Please include a role name for your custom role after color.`
         );
+        return;
     }
     await member.roles.cache
         .find(role => role.name.endsWith(' (Custom)'))
