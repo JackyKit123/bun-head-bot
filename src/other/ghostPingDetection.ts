@@ -12,12 +12,29 @@ export default async function ghostPingDetection(
 
     const mentionList = [
         ...mentions.users.values(),
-        ...mentions.roles.values(),
+        ...mentions.roles.filter(role => role.mentionable),
         ...(content.includes('@everyone') ? ['@everyone'] : []),
         ...(content.includes('@here') ? ['@here'] : []),
     ];
 
     if (!mentionList.length) {
+        return;
+    }
+
+    if (
+        mentions.users.size &&
+        !mentions.roles.size &&
+        !content.includes('@everyone') &&
+        !content.includes('@here') &&
+        mentions.users.every(user => {
+            const filteredMessages = channel.messages.cache.filter(
+                msg =>
+                    msg.createdTimestamp - Date.now() <= 60000 &&
+                    msg.author.id === user.id
+            );
+            return filteredMessages.size > 0;
+        })
+    ) {
         return;
     }
 
