@@ -18,6 +18,11 @@ export const commandList = [
         description: 'Assign yourself a custom role!',
     },
     {
+        command: '`-usagi customrole clear',
+        description:
+            '`MANAGE_ROLES` permission needed, clear unassigned custom roles.',
+    },
+    {
         command: '`-usagi play <search|url>`',
         description:
             'Play music by supplying search param or youtube video url. Currently supporting: *Youtube Video*, *Youtube Playlist*, *Spotify Track*, *Spotify Playlist*',

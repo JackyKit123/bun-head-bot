@@ -10,6 +10,16 @@ export default async function customRole(
         return;
     }
     const colorArg = content.split(' ')[2];
+    if (colorArg === 'clear') {
+        if (member.hasPermission('MANAGE_ROLES')) {
+            clearRoles(guild, channel as Discord.TextChannel);
+            return;
+        }
+        await channel.send(
+            `You need \`MANAGE_ROLES\` permission to clear unassigned custom roles.`
+        );
+        return;
+    }
     const color = colorParser(colorArg);
     const roleName = content.split(' ').slice(3).join(' ').trim();
     if (!color) {
@@ -37,4 +47,19 @@ export default async function customRole(
     });
     await member.roles.add(newRole);
     await channel.send(`Added ${newRole.toString()} to you.`);
+}
+
+export async function clearRoles(
+    guild: Discord.Guild,
+    channel?: Discord.TextChannel
+): Promise<void> {
+    const unusedRoles = guild.roles.cache.filter(role =>
+        role.name.endsWith(' (Custom)')
+    );
+    await Promise.all(unusedRoles.map(async role => await role.delete()));
+    if (channel) {
+        await channel.send(
+            `Cleared ${unusedRoles.size} unassigned custom roles`
+        );
+    }
 }

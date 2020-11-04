@@ -10,7 +10,7 @@ import { spank, pat } from './command/spank';
 import logMessage from './dev-command/logMessage';
 import eightball from './other/8ball';
 import randomfact from './other/deadchat';
-import customRole from './command/customrole';
+import customRole, { clearRoles } from './command/customrole';
 import { roleAdd, roleClaimCommand } from './command/roleclaim';
 import ghostPingDetection from './other/ghostPingDetection';
 import clear from './command/clearChat';
@@ -259,6 +259,21 @@ client.on('messageReactionAdd', async (reaction, user) => {
             `Oops, something went wrong when ${user.toString()} was trying to react to \`${content}\` in ${
                 guild ? guild.name : 'DM Channel'
             } \n${err.stack}`
+        );
+    }
+});
+
+client.on('guildMemberRemove', async member => {
+    const { guild, fetch } = member;
+
+    try {
+        await clearRoles(guild);
+    } catch (err) {
+        await logMessage(
+            client,
+            `Oops, something went wrong when ${(
+                await fetch()
+            ).user.toString()} was leaving ${guild.toString()} \n${err.stack}`
         );
     }
 });
