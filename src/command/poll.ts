@@ -25,9 +25,9 @@ export default async function poll(message: Discord.Message): Promise<void> {
         );
         return;
     }
-    if (pollOptions.length > 26) {
+    if (pollOptions.length > 20) {
         await channel.send(
-            '`You can only have up to 26 options for the poll.`'
+            '`You can only have up to 20 options for the poll.`'
         );
         return;
     }
