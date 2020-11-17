@@ -18,6 +18,11 @@ export const commandList = [
         description: 'Assign yourself a custom role!',
     },
     {
+        command: '`-usagi poll <poll title>|[optional poll options]`',
+        description:
+            'Start a poll, default to Yes/No Question, or you can include optional poll options separated by "|"',
+    },
+    {
         command: '`-usagi play <search|url>`',
         description:
             'Play music by supplying search param or youtube video url. Currently supporting: *Youtube Video*, *Youtube Playlist*, *Spotify Track*, *Spotify Playlist*',
