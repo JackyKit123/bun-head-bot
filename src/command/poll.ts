@@ -10,7 +10,7 @@ export default async function poll(message: Discord.Message): Promise<void> {
 
     const poll = content.replace(/^\\?-usagi poll /i, '').split('|');
 
-    const [pollTitle, ...pollOptions] = poll;
+    const [pollTitle, ...pollOptions] = poll.filter(notEmpty => notEmpty);
 
     if (!pollTitle) {
         await channel.send('`You need to include the title of the poll.`');
