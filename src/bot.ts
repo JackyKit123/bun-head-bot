@@ -11,6 +11,7 @@ import logMessage from './dev-command/logMessage';
 import eightball from './other/8ball';
 import randomfact from './other/deadchat';
 import customRole from './command/customrole';
+import jackyisabot from './other/jackyisabot';
 import { roleAdd, roleClaimCommand } from './command/roleclaim';
 import ghostPingDetection from './other/ghostPingDetection';
 import clear from './command/clearChat';
@@ -51,6 +52,7 @@ client.on('message', async message => {
         return;
     }
 
+    jackyisabot(message);
     eightball(message);
     randomfact(message, false);
 
