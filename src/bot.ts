@@ -52,7 +52,7 @@ client.on('message', async message => {
         return;
     }
 
-    jackyisabot(message);
+    // jackyisabot(message);
     eightball(message);
     randomfact(message, false);
 
