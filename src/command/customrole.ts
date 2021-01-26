@@ -24,12 +24,10 @@ export default async function customRole(
         );
         return;
     }
-    await member.roles.cache
-        .find(role => role.name.endsWith(' (Custom)'))
-        ?.delete();
+    await member.roles.cache.find(role => role.name.endsWith('‎‎‎'))?.delete();
     const newRole = await guild.roles.create({
         data: {
-            name: `${roleName} (Custom)`,
+            name: `${roleName}‎‎‎`,
             color: [color.r, color.g, color.b],
             mentionable: false,
             hoist: false,
