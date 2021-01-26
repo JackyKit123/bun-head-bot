@@ -10,7 +10,11 @@ import { spank, pat } from './command/spank';
 import logMessage from './dev-command/logMessage';
 import eightball from './other/8ball';
 import randomfact from './other/deadchat';
-import customRole from './command/customrole';
+import customRole, {
+    claimRoleChannel,
+    manageJoin,
+    manageLeave,
+} from './command/customrole';
 import { roleAdd, roleClaimCommand } from './command/roleclaim';
 import ghostPingDetection from './other/ghostPingDetection';
 import clear from './command/clearChat';
@@ -59,6 +63,7 @@ client.on('message', async message => {
 
     eightball(message);
     randomfact(message, false);
+    claimRoleChannel(message, client);
 
     if (!suffix.match(/^\\?-usagi\b/i)) {
         return;
@@ -271,6 +276,22 @@ client.on('messageReactionAdd', async (reaction, user) => {
             } \n${err.stack}`
         );
     }
+});
+
+client.on('guildMemberAdd', async member => {
+    if (member.partial) {
+        const fetchedMember = await member.fetch();
+
+        if (fetchedMember.user.bot) {
+            return;
+        }
+
+        await manageJoin(fetchedMember);
+    }
+});
+
+client.on('guildMemberRemove', async member => {
+    await manageLeave(member.guild);
 });
 
 client.login(process.env.BOT_TOKEN);
