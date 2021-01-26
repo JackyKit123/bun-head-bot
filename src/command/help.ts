@@ -80,14 +80,6 @@ export const commandList = [
         description:
             '`MANAGE_MESSAGES` permission needed, bulk delete messages.',
     },
-    {
-        command: '`-usagi spank leaderboard`',
-        description: 'Leaderboard for whoever spank, being spanked the most.',
-    },
-    {
-        command: '`-usagi pat leaderboard`',
-        description: 'Leaderboard for whoever pat, being patted the most.',
-    },
 ];
 
 export default async function help(message: Discord.Message): Promise<void> {
