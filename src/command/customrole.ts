@@ -62,14 +62,13 @@ export async function claimRoleChannel(
     client: Discord.Client
 ): Promise<void> {
     const channelMessages = await message.channel.messages.fetchPinned();
-
+    const isCustomRoleClaimMessage = (msg: Discord.Message) =>
+        msg.author.id === client.user?.id &&
+        msg.content ===
+            'Use `-usagi customrole <color> <role name>` to create your custom role.```Example: -usagi customrole #ff0000 Best Player!```';
     if (
-        channelMessages.find(
-            msg =>
-                msg.author.id === client.user?.id &&
-                msg.content ===
-                    'Use `-usagi customrole <color> <role name>` to create your custom role.```Example: -usagi customrole #ff0000 Best Player!```'
-        )
+        channelMessages.find(isCustomRoleClaimMessage) &&
+        !isCustomRoleClaimMessage(message)
     ) {
         await wait(5000);
         await message.delete();
