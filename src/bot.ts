@@ -279,7 +279,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 });
 
 client.on('guildMemberAdd', async member => {
-    console.log(member.partial);
     const fetchedMember = member.partial ? await member.fetch() : member;
 
     if (fetchedMember.user.bot) {
