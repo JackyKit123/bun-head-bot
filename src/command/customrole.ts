@@ -1,5 +1,8 @@
 import * as Discord from 'discord.js';
 import * as colorParser from 'color-parser';
+import { promisify } from 'util';
+
+const wait = promisify(setTimeout);
 
 export default async function customRole(
     message: Discord.Message
@@ -68,6 +71,7 @@ export async function claimRoleChannel(
                     'Use `-usagi customrole <color> <role name>` to create your custom role.```Example: -usagi customrole #ff0000 Best Player!```'
         )
     ) {
+        await wait(5000);
         await message.delete();
     }
 }

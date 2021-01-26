@@ -49,6 +49,7 @@ client.on('message', async message => {
     const { content, channel, guild, author } = message;
     const [suffix, command] = content.split(' ');
 
+    claimRoleChannel(message, client);
     if (author.bot) {
         return;
     }
@@ -63,7 +64,6 @@ client.on('message', async message => {
 
     eightball(message);
     randomfact(message, false);
-    claimRoleChannel(message, client);
 
     if (!suffix.match(/^\\?-usagi\b/i)) {
         return;
