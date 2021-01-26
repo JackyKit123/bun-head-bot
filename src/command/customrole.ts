@@ -94,7 +94,7 @@ export async function manageLeave(guild: Discord.Guild): Promise<void> {
     await Promise.all([guild.members.fetch(), guild.roles.fetch()]);
     await Promise.all(
         guild.roles.cache.map(async role => {
-            if (role.name.endsWith(`‎‎‎`)) {
+            if (role.name.endsWith(`‎‎‎`) && role.members.size === 0) {
                 await role.delete();
             }
         })
