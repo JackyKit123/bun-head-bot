@@ -25,6 +25,13 @@ export default async function customRole(
         return;
     }
     await member.roles.cache.find(role => role.name.endsWith('‎‎‎'))?.delete();
+    await Promise.all(
+        member.roles.cache.map(async role => {
+            if (role.name === 'No Custom Role') {
+                await member.roles.remove(role);
+            }
+        })
+    );
     const newRole = await guild.roles.create({
         data: {
             name: `${roleName}‎‎‎`,
