@@ -31,14 +31,14 @@ export async function snipeListener(
 
 export default async function snipe(message: Discord.Message): Promise<void> {
     const { member, channel, content, author } = message;
-    const command = content.toLowerCase().trim();
+    const command = content.toLowerCase().trim().split(' ')?.[1];
 
     if (!member) {
         return;
     }
 
     const sniped = snipeStore[
-        command.toLowerCase() === '!snipe' ? 'snipe' : 'editsnipe'
+        command.toLowerCase() === 'snipe' ? 'snipe' : 'editsnipe'
     ].get(channel.id);
 
     if (!sniped) {
