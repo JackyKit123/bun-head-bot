@@ -299,10 +299,7 @@ client.on('guildMemberRemove', async member => {
 client.on('messageDelete', async message => {
     const { guild, author } = message;
     try {
-        if (
-            process.env.COMMUNITY_SERVER_ID === guild?.id &&
-            process.env.NODE_ENV === 'production'
-        ) {
+        if (process.env.NODE_ENV === 'production') {
             await snipeListener('delete', message);
         }
     } catch (err) {
@@ -330,10 +327,7 @@ client.on('messageDelete', async message => {
 client.on('messageUpdate', async message => {
     const { guild, author } = message;
     try {
-        if (
-            process.env.COMMUNITY_SERVER_ID === guild?.id &&
-            process.env.NODE_ENV === 'production'
-        ) {
+        if (process.env.NODE_ENV === 'production') {
             await snipeListener('edit', message);
         }
     } catch (err) {
