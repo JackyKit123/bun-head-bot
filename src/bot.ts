@@ -101,6 +101,7 @@ client.on('message', async message => {
                 await clear(message);
                 break;
             case 'snipe':
+            case 'editsnipe':
                 await snipe(message);
                 break;
             case 'poll':

@@ -31,7 +31,7 @@ export async function snipeListener(
 
 export default async function snipe(message: Discord.Message): Promise<void> {
     const { member, channel, content, author } = message;
-    const command = content.toLowerCase().trim().split(' ')?.[1];
+    const [, command] = content.split(' ');
 
     if (!member) {
         return;
