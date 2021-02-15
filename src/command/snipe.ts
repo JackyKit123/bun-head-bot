@@ -17,9 +17,9 @@ export async function snipeListener(
         message = await message.fetch();
     }
 
-    const { guild, channel, author } = message;
+    const { channel, author } = message;
 
-    if (guild?.id !== process.env.COMMUNITY_SERVER_ID || author.bot) {
+    if (author.bot) {
         return;
     }
 
