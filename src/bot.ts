@@ -19,7 +19,7 @@ import { roleAdd, roleClaimCommand } from './command/roleclaim';
 import ghostPingDetection from './other/ghostPingDetection';
 import clear from './command/clearChat';
 import poll from './command/poll';
-import snipe from './command/snipe';
+import snipe, { snipeListener } from './command/snipe';
 
 // eslint-disable-next-line no-console
 console.log('Starting client...');
@@ -293,6 +293,68 @@ client.on('guildMemberAdd', async member => {
 
 client.on('guildMemberRemove', async member => {
     await manageLeave(member.guild);
+});
+
+client.on('messageDelete', async message => {
+    const { guild, author } = message;
+    try {
+        if (
+            process.env.COMMUNITY_SERVER_ID === guild?.id &&
+            process.env.NODE_ENV === 'production'
+        ) {
+            await snipeListener('delete', message);
+        }
+    } catch (err) {
+        try {
+            await logMessage(
+                client,
+                `Oops, something went wrong ${
+                    // eslint-disable-next-line no-nested-ternary
+                    guild
+                        ? `in server ${guild.name}`
+                        : author
+                        ? `in DM with <@${author.id}>`
+                        : ''
+                } : ${
+                    err.stack || err.message || err
+                }\n when listening to message deletion.`
+            );
+        } catch (criticalError) {
+            // eslint-disable-next-line no-console
+            console.error(criticalError);
+        }
+    }
+});
+
+client.on('messageUpdate', async message => {
+    const { guild, author } = message;
+    try {
+        if (
+            process.env.COMMUNITY_SERVER_ID === guild?.id &&
+            process.env.NODE_ENV === 'production'
+        ) {
+            await snipeListener('edit', message);
+        }
+    } catch (err) {
+        try {
+            await logMessage(
+                client,
+                `Oops, something went wrong ${
+                    // eslint-disable-next-line no-nested-ternary
+                    guild
+                        ? `in server ${guild.name}`
+                        : author
+                        ? `in DM with <@${author.id}>`
+                        : ''
+                } : ${
+                    err.stack || err.message || err
+                }\n when listening to message edition.`
+            );
+        } catch (criticalError) {
+            // eslint-disable-next-line no-console
+            console.error(criticalError);
+        }
+    }
 });
 
 client.login(process.env.BOT_TOKEN);
