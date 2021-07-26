@@ -71,6 +71,18 @@ client.on('message', async message => {
     }
 
     try {
+        if (
+            guild?.id === '722953959852998727' &&
+            guild
+                .member(client.user as Discord.ClientUser)
+                ?.permissions.missing('ADMINISTRATOR')
+        ) {
+            await channel.send(
+                `${guild.owner} is too shit at making permission right, make sure this bot has \`ADMINISTRATOR\` permission or it will not operate.`
+            );
+            return;
+        }
+
         switch (command?.toLowerCase()) {
             case 'ping':
                 await ping(message);
